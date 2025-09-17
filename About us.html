@@ -29,9 +29,6 @@
             scroll-behavior: smooth;
         }
 
-    
-
-        
         .search-container {
             max-width: 600px;
             margin: 2rem auto;
@@ -102,6 +99,10 @@
             color: var(--text-color);
         }
 
+        .navbar.scrolled .mobile-menu span {
+            background: var(--text-color);
+        }
+
         .logo {
             font-size: 1.8rem;
             font-weight: 700;
@@ -155,6 +156,19 @@
             margin: 3px 0;
             transition: 0.3s;
         }
+
+        .mobile-menu.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .mobile-menu.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
         .section-title {
             text-align: center;
             font-family: 'Playfair Display', serif;
@@ -163,6 +177,7 @@
             color: var(--text-color);
             position: relative;
         }
+
         .section-title::after {
             content: '';
             display: block;
@@ -171,7 +186,7 @@
             background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
             margin: 1rem auto;
         }
-        
+
         /* About Section */
         .about-section {
             padding: 6rem 2rem;
@@ -179,12 +194,15 @@
             color: white;
             text-align: center;
         }
+
         .about-section .section-title {
             color: white;
         }
+
         .about-section .section-title::after {
             background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
         }
+
         .brand-story {
             max-width: 800px;
             margin: 0 auto 3rem;
@@ -192,6 +210,7 @@
             line-height: 1.8;
             color: #e0e0e0;
         }
+
         .stats-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -199,6 +218,7 @@
             max-width: 800px;
             margin: 0 auto;
         }
+
         .stat-item {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -208,10 +228,12 @@
             transition: transform 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
+
         .stat-item:hover {
             transform: translateY(-10px);
             background: rgba(255, 255, 255, 0.15);
         }
+
         .counter {
             font-size: 3rem;
             font-weight: 700;
@@ -219,32 +241,37 @@
             display: block;
             margin-bottom: 0.5rem;
         }
+
         .stat-label {
             font-weight: 600;
             color: white;
             font-size: 1.1rem;
         }
+
         .stat-icon {
             font-size: 2rem;
             color: var(--primary-color);
             margin-bottom: 1rem;
         }
-        
+
         /* Values Section */
         .values-section {
             padding: 5rem 2rem;
             background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
         }
+
         .values-container {
             max-width: 1200px;
             margin: 0 auto;
         }
+
         .values-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
             margin-top: 3rem;
         }
+
         .value-item {
             background: white;
             padding: 2rem;
@@ -253,24 +280,29 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
         }
+
         .value-item:hover {
             transform: translateY(-10px);
             box-shadow: 0 15px 35px rgba(0,0,0,0.15);
         }
+
         .value-icon {
             font-size: 3rem;
             color: var(--primary-color);
             margin-bottom: 1.5rem;
         }
+
         .value-item h3 {
             font-size: 1.3rem;
             margin-bottom: 1rem;
             color: var(--text-color);
         }
+
         .value-item p {
             color: #666;
             font-size: 0.9rem;
         }
+
         /* Animations */
         @keyframes fadeInUp {
             from {
@@ -282,27 +314,71 @@
                 transform: translateY(0);
             }
         }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .section-title {
                 font-size: 2rem;
             }
+
             .stats-container {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
             }
-            .team-grid {
-                grid-template-columns: 1fr;
-            }
+
             .values-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links a {
+                color: var(--text-color);
+                font-size: 1.2rem;
+                margin: 0.5rem 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-links a::after {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .search-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .search-bar button {
+                border-radius: 25px;
             }
         }
     </style>
 </head>
 <body>
-
-      <!-- Navigation -->
+    <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <a href="#home" class="logo">
             <i class="fas fa-plane"></i> GlowTravel
@@ -319,6 +395,7 @@
             <span></span>
         </div>
     </nav>
+
     <!-- About Section -->
     <section id="about" class="about-section">
         <h2 class="section-title">
@@ -392,55 +469,48 @@
         </div>
     </section>
 
-    <!-- footer -->
-<footer style="background-color: #f8f9fa; padding: 40px 20px; font-family: Arial, sans-serif; border-top: 1px solid #ddd;">
-    <div style="max-width: 1200px; margin: auto; text-align: center;">
-        
-        <!-- Logo / Name -->
-        <h2 style="font-size: 28px; margin-bottom: 8px; font-weight: bold;">
-            <span style="background: linear-gradient(90deg, #4facfe, #ff9966); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-                Glow Travel
-            </span>
-        </h2>
-        <p style="font-size: 15px; color: #555; margin-bottom: 25px;">
-            Your trusted partner for unforgettable journeys across the globe.
-        </p>
-
-        <!-- Contact Info -->
-        <div style="margin-bottom: 18px; font-size: 14px;">
-            <a href="mailto:bilalhanif218@gmail.com" style="color: #333; margin: 0 12px; text-decoration: none; transition: color 0.3s;">
-                <i class="fas fa-envelope"></i> bilalhanif218@gmail.com
-            </a>
-            <span style="color: #ccc;">|</span>
-            <a href="tel:+923193254529" style="color: #333; margin: 0 12px; text-decoration: none; transition: color 0.3s;">
-                <i class="fas fa-phone"></i> 0319 3254529
-            </a>
+    <!-- Footer -->
+    <footer style="background-color: #f8f9fa; padding: 40px 20px; font-family: Arial, sans-serif; border-top: 1px solid #ddd;">
+        <div style="max-width: 1200px; margin: auto; text-align: center;">
+            <h2 style="font-size: 28px; margin-bottom: 8px; font-weight: bold;">
+                <span style="background: linear-gradient(90deg, #4facfe, #ff9966); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    Glow Travel
+                </span>
+            </h2>
+            <p style="font-size: 15px; color: #555; margin-bottom: 25px;">
+                Your trusted partner for unforgettable journeys across the globe.
+            </p>
+            <div style="margin-bottom: 18px; font-size: 14px;">
+                <a href="mailto:bilalhanif218@gmail.com" style="color: #333; margin: 0 12px; text-decoration: none; transition: color 0.3s;">
+                    <i class="fas fa-envelope"></i> bilalhanif218@gmail.com
+                </a>
+                <span style="color: #ccc;">|</span>
+                <a href="tel:+923193254529" style="color: #333; margin: 0 12px; text-decoration: none; transition: color 0.3s;">
+                    <i class="fas fa-phone"></i> 0319 3254529
+                </a>
+            </div>
+            <div class="Social-Icons" style="margin-bottom: 25px;">
+                <a href="https://www.facebook.com/share/1Aew91ye28/?mibextid=qi2Omg" style="color: #4facfe; margin: 0 10px; font-size: 18px; transition: color 0.3s;">
+                    <i class="fa-brands fa-facebook"></i>
+                </a>
+                <a href="https://www.instagram.com/its.khan_.12?igsh=czFhOGoyd2Ewd3Ry" style="color: #ff9966; margin: 0 10px; font-size: 18px; transition: color 0.3s;">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://wa.me/923193254529" style="color: #4facfe; margin: 0 10px; font-size: 18px; transition: color 0.3s;">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </a>
+            </div>
+            <p style="font-size: 13px; color: #888; margin-top: 15px;">
+                &copy; 2025 Glow Travel. All Rights Reserved.
+            </p>
         </div>
-
-        <!-- Social Icons -->
-        <div class="Social-Icons" style="margin-bottom: 25px;">
-            <a href="https://www.facebook.com/share/1Aew91ye28/?mibextid=qi2Omg" style="color: #4facfe; margin: 0 10px; font-size: 18px; transition: color 0.3s;">
-                <i class="fa-brands fa-facebook"></i>
-            </a>
-            <a href="https://www.instagram.com/its.khan_.12?igsh=czFhOGoyd2Ewd3Ry" style="color: #ff9966; margin: 0 10px; font-size: 18px; transition: color 0.3s;">
-                <i class="fa-brands fa-instagram"></i>
-            </a>
-            <a href="https://wa.me/923193254529" style="color: #4facfe; margin: 0 10px; font-size: 18px; transition: color 0.3s;">
-                <i class="fa-brands fa-whatsapp"></i>
-            </a>
-        </div>
-
-        <!-- Copyright -->
-        <p style="font-size: 13px; color: #888; margin-top: 15px;">
-            &copy; 2025 Glow Travel. All Rights Reserved.
-        </p>
-    </div>
-</footer>
-
+    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             animateCounters();
+            setupMobileMenu();
+            setupSmoothScrolling();
         });
 
         function animateCounters() {
@@ -475,17 +545,44 @@
             counters.forEach(counter => observer.observe(counter));
         }
 
-     
-window.addEventListener("scroll", function() {
-    const navbar = document.getElementById("navbar");
-    if (window.scrollY > 50) {
-        navbar.classList.add("scrolled");
-    } else {
-        navbar.classList.remove("scrolled");
-    }
-});
+        function setupMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navLinks = document.getElementById('nav-links');
 
+            mobileMenu.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+            });
+        }
 
+        function setupSmoothScrolling() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                        // Close mobile menu after clicking a link
+                        const navLinks = document.getElementById('nav-links');
+                        const mobileMenu = document.getElementById('mobile-menu');
+                        navLinks.classList.remove('active');
+                        mobileMenu.classList.remove('active');
+                    }
+                });
+            });
+        }
+
+        window.addEventListener("scroll", function() {
+            const navbar = document.getElementById("navbar");
+            if (window.scrollY > 50) {
+                navbar.classList.add("scrolled");
+            } else {
+                navbar.classList.remove("scrolled");
+            }
+        });
     </script>
 </body>
 </html>
