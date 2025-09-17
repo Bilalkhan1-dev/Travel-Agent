@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glow Travel</title>
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #87CEEB;
+            --secondary-color: #FF7F50;
+            --accent-color: #50C878;
+            --text-color: #333;
+            --light-gray: #f8f9fa;
+            --dark-overlay: rgba(0, 0, 0, 0.5);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-gray);
+            scroll-behavior: smooth;
+        }
+
+    
+
+        
+        .search-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .search-bar {
+            display: flex;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            padding: 5px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 15px 20px;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-bar button {
+            background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 45px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .navbar.scrolled .logo,
+        .navbar.scrolled .nav-links a {
+            color: var(--text-color);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .mobile-menu span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+        .section-title {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--text-color);
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            margin: 1rem auto;
+        }
+        
+        /* About Section */
+        .about-section {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #1a2a6c, #2c3e50);
+            color: white;
+            text-align: center;
+        }
+        .about-section .section-title {
+            color: white;
+        }
+        .about-section .section-title::after {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        }
+        .brand-story {
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #e0e0e0;
+        }
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .stat-item:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        .counter {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            font-weight: 600;
+            color: white;
+            font-size: 1.1rem;
+        }
+        .stat-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        /* Values Section */
+        .values-section {
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+        }
+        .values-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .value-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .value-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        .value-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+        .value-item h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+        .value-item p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+            }
+            .stats-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+      <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <a href="#home" class="logo">
+            <i class="fas fa-plane"></i> GlowTravel
+        </a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="trips.html"><i class="fas fa-map-marked-alt"></i> Trips</a></li>
+            <li><a href="About us.html"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="contactus.html"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
+        <div class="mobile-menu" id="mobile-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <h2 class="section-title">
+            <i class="fas fa-heart"></i> About Glow Travel
+        </h2>
+        <p class="brand-story">
+            At Glow Travel, we believe that travel is more than just seeing new places; it's about experiencing the world in a meaningful way. Our mission is to make trip planning effortless and exciting, offering curated journeys that cater to every traveler's dream. With years of expertise and a passion for adventure, we create unforgettable experiences that connect cultures, inspire growth, and create lasting memories.
+        </p>
+        
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <span class="counter" data-target="150">0</span>
+                <div class="stat-label">Destinations Covered</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <span class="counter" data-target="25000">0</span>
+                <div class="stat-label">Happy Travelers</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-route"></i>
+                </div>
+                <span class="counter" data-target="300">0</span>
+                <div class="stat-label">Tours Available</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="values-section">
+        <div class="values-container">
+            <h2 class="section-title">
+                <i class="fas fa-star"></i> Our Core Values
+            </h2>
+            <div class="values-grid">
+                <div class="value-item">
+                    <div class="value-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Integrity</h3>
+                    <p>We operate with transparency and honesty in all our dealings, ensuring trust with our clients and partners.</p>
+                </div>
+                <div class="value-item">
+                    <div class="value-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3>Innovation</h3>
+                    <p>We constantly seek new ways to enhance travel experiences through technology and creative solutions.</p>
+                </div>
+                <div class="value-item">
+                    <div class="value-icon">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <h3>Sustainability</h3>
+                    <p>We're committed to responsible tourism that preserves natural environments and supports local communities.</p>
+                </div>
+                <div class="value-item">
+                    <div class="value-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Passion</h3>
+                    <p>Our love for travel drives us to create exceptional experiences that inspire and transform our clients.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- footer -->
+<footer style="background-color: #f8f9fa; padding: 40px 20px; font-family: Arial, sans-serif; border-top: 1px solid #ddd;">
+    <div style="max-width: 1200px; margin: auto; text-align: center;">
+        
+        <!-- Logo / Name -->
+        <h2 style="font-size: 28px; margin-bottom: 8px; font-weight: bold;">
+            <span style="background: linear-gradient(90deg, #4facfe, #ff9966); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                Glow Travel
+            </span>
+        </h2>
+        <p style="font-size: 15px; color: #555; margin-bottom: 25px;">
+            Your trusted partner for unforgettable journeys across the globe.
+        </p>
+
+        <!-- Contact Info -->
+        <div style="margin-bottom: 18px; font-size: 14px;">
+            <a href="mailto:bilalhanif218@gmail.com" style="color: #333; margin: 0 12px; text-decoration: none; transition: color 0.3s;">
+                <i class="fas fa-envelope"></i> bilalhanif218@gmail.com
+            </a>
+            <span style="color: #ccc;">|</span>
+            <a href="tel:+923193254529" style="color: #333; margin: 0 12px; text-decoration: none; transition: color 0.3s;">
+                <i class="fas fa-phone"></i> 0319 3254529
+            </a>
+        </div>
+
+        <!-- Social Icons -->
+        <div class="Social-Icons" style="margin-bottom: 25px;">
+            <a href="https://www.facebook.com/share/1Aew91ye28/?mibextid=qi2Omg" style="color: #4facfe; margin: 0 10px; font-size: 18px; transition: color 0.3s;">
+                <i class="fa-brands fa-facebook"></i>
+            </a>
+            <a href="https://www.instagram.com/its.khan_.12?igsh=czFhOGoyd2Ewd3Ry" style="color: #ff9966; margin: 0 10px; font-size: 18px; transition: color 0.3s;">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="https://wa.me/923193254529" style="color: #4facfe; margin: 0 10px; font-size: 18px; transition: color 0.3s;">
+                <i class="fa-brands fa-whatsapp"></i>
+            </a>
+        </div>
+
+        <!-- Copyright -->
+        <p style="font-size: 13px; color: #888; margin-top: 15px;">
+            &copy; 2025 Glow Travel. All Rights Reserved.
+        </p>
+    </div>
+</footer>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            animateCounters();
+        });
+
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter');
+            const observerOptions = {
+                threshold: 0.5,
+                rootMargin: '0px 0px -100px 0px'
+            };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const counter = entry.target;
+                        const target = parseInt(counter.getAttribute('data-target'));
+                        let current = 0;
+                        const increment = target / 200;
+                        
+                        const updateCounter = () => {
+                            current += increment;
+                            if (current < target) {
+                                counter.textContent = Math.ceil(current).toLocaleString();
+                                requestAnimationFrame(updateCounter);
+                            } else {
+                                counter.textContent = target.toLocaleString();
+                            }
+                        };
+                        
+                        updateCounter();
+                        observer.unobserve(counter);
+                    }
+                });
+            }, observerOptions);
+            counters.forEach(counter => observer.observe(counter));
+        }
+
+     
+window.addEventListener("scroll", function() {
+    const navbar = document.getElementById("navbar");
+    if (window.scrollY > 50) {
+        navbar.classList.add("scrolled");
+    } else {
+        navbar.classList.remove("scrolled");
+    }
+});
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glow Travel</title>
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #87CEEB;
+            --secondary-color: #FF7F50;
+            --accent-color: #50C878;
+            --text-color: #333;
+            --light-gray: #f8f9fa;
+            --dark-overlay: rgba(0, 0, 0, 0.5);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-gray);
+            scroll-behavior: smooth;
+        }
+
+          /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .navbar.scrolled .logo,
+        .navbar.scrolled .nav-links a {
+            color: var(--text-color);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .mobile-menu span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+        .section-title {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--text-color);
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            margin: 1rem auto;
+        }
+        /* Hero Section for Trips */
+        .trips-hero {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: white;
+            text-align: center;
+            padding: 6rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .trips-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1503220317375-aaad61436b1b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') center/cover;
+            opacity: 0.3;
+            z-index: 0;
+        }
+        .trips-hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .trips-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-family: 'Playfair Display', serif;
+        }
+        .trips-hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        /* Trip Catalog Section */
+        .trip-catalog-section {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+        }
+        .filter-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            justify-content: center;
+            align-items: center;
+        }
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .filter-group label {
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+        .filter-controls select,
+        .filter-controls input {
+            padding: 10px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        .filter-controls select:focus,
+        .filter-controls input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.1);
+        }
+        .search-filters {
+            flex: 1;
+            min-width: 250px;
+            max-width: 400px;
+        }
+        .trip-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .trip-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        .trip-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .trip-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        }
+        .trip-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .trip-card:hover img {
+            transform: scale(1.05);
+        }
+        .trip-info {
+            padding: 1.5rem;
+        }
+        .trip-info h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+            font-weight: 600;
+        }
+        .trip-info .price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+        .trip-info .description {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+        .trip-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 1rem;
+        }
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .stars {
+            color: #ffd700;
+        }
+        .trip-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            color: white;
+        }
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        /* Trip Details Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+        .modal-content {
+            background: white;
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideIn 0.3s ease;
+        }
+        .modal-header {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 20px 20px 0 0;
+        }
+        .modal-body {
+            padding: 2rem;
+        }
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s ease;
+        }
+        .close-btn:hover {
+            color: var(--secondary-color);
+        }
+        .modal-trip-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+        }
+        .trip-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .detail-item {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .detail-item i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        .detail-item strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .trips-hero h1 {
+                font-size: 2.5rem;
+            }
+            .filter-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .trip-gallery {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .trips-hero h1 {
+                font-size: 2rem;
+            }
+            .trip-gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+      <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <a href="#home" class="logo">
+            <i class="fas fa-plane"></i> GlowTravel
+        </a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="trips.html"><i class="fas fa-map-marked-alt"></i> Trips</a></li>
+            <li><a href="About us.html"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="contactus.html"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
+        <div class="mobile-menu" id="mobile-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+    <!-- Hero Section for Trips -->
+    <header class="trips-hero">
+        <div class="trips-hero-content">
+            <h1>Discover Amazing Destinations</h1>
+            <p>Explore our curated collection of unforgettable travel experiences</p>
+        </div>
+    </header>
+
+    <!-- Trip Catalog Section -->
+    <section id="trip-catalog" class="trip-catalog-section">
+        <h2 class="section-title">
+            <i class="fas fa-globe-americas"></i> Explore Our Amazing Destinations
+        </h2>
+        
+        <div class="filter-controls">
+            <div class="filter-group">
+                <label for="search-filter">Search</label>
+                <input type="text" id="search-filter" class="search-filters" placeholder="Search trips...">
+            </div>
+            
+            <div class="filter-group">
+                <label for="sort-select">Sort By</label>
+                <select id="sort-select">
+                    <option value="name">Name</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="rating">Rating</option>
+                    <option value="duration">Duration</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="type-filter">Trip Type</label>
+                <select id="type-filter">
+                    <option value="">All Types</option>
+                    <option value="adventure">Adventure</option>
+                    <option value="cultural">Cultural</option>
+                    <option value="relaxation">Relaxation</option>
+                    <option value="urban">Urban</option>
+                    <option value="nature">Nature</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="price-range">Max Price</label>
+                <select id="price-range">
+                    <option value="">Any Price</option>
+                    <option value="1000">Under $1,000</option>
+                    <option value="2000">Under $2,000</option>
+                    <option value="3000">Under $3,000</option>
+                    <option value="5000">Under $5,000</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="duration-filter">Duration</label>
+                <select id="duration-filter">
+                    <option value="">Any Duration</option>
+                    <option value="3">3 days</option>
+                    <option value="5">5 days</option>
+                    <option value="7">7 days</option>
+                    <option value="10">10+ days</option>
+                </select>
+            </div>
+        </div>
+        <div id="trip-gallery" class="trip-gallery">
+            <!-- Trip cards will be dynamically inserted here -->
+        </div>
+    </section>
+
+    <!-- Trip Details Modal -->
+    <div id="details-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Trip Details</h2>
+                <button class="close-btn" id="close-details">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-trip-content">
+                <!-- Trip details will be populated here -->
+            </div>
+        </div>
+    </div>
+    <footer style="background-color: #f8f9fa; padding: 40px 20px; font-family: Arial, sans-serif; border-top: 1px solid #ddd;">
+    <div style="max-width: 1200px; margin: auto; text-align: center;">
+        
+        <!-- Logo / Name -->
+        <h2 style="font-size: 28px; margin-bottom: 8px; font-weight: bold;">
+            <span style="background: linear-gradient(90deg, #4facfe, #ff9966); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                Glow Travel
+            </span>
+        </h2>
+        <p style="font-size: 15px; color: #555; margin-bottom: 25px;">
+            Your trusted partner for unforgettable journeys across the globe.
+        </p>
+
+        <!-- Contact Info -->
+       <div style="margin-bottom: 18px; font-size: 14px;">
+            <a href="mailto:bilalhanif218@gmail.com" style="color: #333; margin: 0 12px; text-decoration: none; transition: color 0.3s;">
+                <i class="fas fa-envelope"></i> bilalhanif218@gmail.com
+            </a>
+            <span style="color: #ccc;">|</span>
+            <a href="tel:+923193254529" style="color: #333; margin: 0 12px; text-decoration: none; transition: color 0.3s;">
+                <i class="fas fa-phone"></i> 0319 3254529
+            </a>
+        </div>
+
+        <!-- Social Icons -->
+        <div class="Social-Icons" style="margin-bottom: 25px;">
+            <a href="https://www.facebook.com/share/1Aew91ye28/?mibextid=qi2Omg" style="color: #4facfe; margin: 0 10px; font-size: 18px; transition: color 0.3s;">
+                <i class="fa-brands fa-facebook"></i>
+            </a>
+            <a href="https://www.instagram.com/its.khan_.12?igsh=czFhOGoyd2Ewd3Ry" style="color: #ff9966; margin: 0 10px; font-size: 18px; transition: color 0.3s;">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="https://wa.me/923193254529" style="color: #4facfe; margin: 0 10px; font-size: 18px; transition: color 0.3s;">
+                <i class="fa-brands fa-whatsapp"></i>
+            </a>
+        </div>
+
+        <!-- Copyright -->
+        <p style="font-size: 13px; color: #888; margin-top: 15px;">
+            &copy; 2025 Glow Travel. All Rights Reserved.
+        </p>
+    </div>
+</footer>
+
+    <script>
+
+      
+    window.addEventListener("scroll", function () {
+        const navbar = document.querySelector(".navbar");
+        if (window.scrollY > 50) {
+            navbar.classList.add("scrolled");
+        } else {
+            navbar.classList.remove("scrolled");
+        }
+    });
+
+
+        // Trip data (Pakistan Edition)
+const trips = [
+    {
+        id: 1,
+        name: "Hunza Valley Escape",
+        price: 1200,
+        priceDisplay: "$1,200",
+        description: "Discover the breathtaking beauty of Hunza Valley with its snow-capped peaks, turquoise rivers, and warm hospitality. Explore ancient forts and serene mountain villages.",
+        image: "assets/images/pic1.jpg",
+        type: "nature",
+        duration: 7,
+        rating: 4.9,
+        continent: "Asia",
+        activities: ["Fort Visits", "Mountain Hiking", "Cultural Evenings", "Photography Tours"],
+        accommodation: "Boutique hotel with mountain views",
+        transport: "Private vehicle + domestic flight",
+        startDate: "2024-04-10",
+        highlights: ["Baltit Fort", "Attabad Lake boating", "Eagle’s Nest sunset", "Karimabad bazaar"]
+    },
+    {
+        id: 2,
+        name: "Skardu Adventure",
+        price: 1400,
+        priceDisplay: "$1,400",
+        description: "Venture into Skardu, the gateway to some of the world’s highest peaks. Witness crystal-clear lakes, ancient rock carvings, and unforgettable landscapes.",
+        image: "assets/images/pic6.jpg",
+        type: "adventure",
+        duration: 8,
+        rating: 4.8,
+        continent: "Asia",
+        activities: ["Trekking", "Lake Visits", "Fort Tours", "Local Handicraft Shopping"],
+        accommodation: "Mountain lodge near Upper Kachura Lake",
+        transport: "Domestic flight + jeep transfers",
+        startDate: "2024-05-15",
+        highlights: ["Shangrila Resort", "Shigar Fort", "Upper & Lower Kachura Lakes", "Sheosar Lake in Deosai"]
+    },
+    {
+        id: 3,
+        name: "Fairy Meadows Trek",
+        price: 1300,
+        priceDisplay: "$1,300",
+        description: "Trek to one of the most beautiful places on Earth, with panoramic views of Nanga Parbat. Enjoy camping under starry skies and lush green meadows.",
+        image: "assets/images/pic3.jpg",
+        type: "adventure",
+        duration: 6,
+        rating: 4.7,
+        continent: "Asia",
+        activities: ["Trekking", "Camping", "Photography", "Nature Walks"],
+        accommodation: "Tents and wooden huts in Fairy Meadows",
+        transport: "Jeep ride + guided trek",
+        startDate: "2024-06-05",
+        highlights: ["View of Nanga Parbat", "Raikot Glacier hike", "Fairy Meadows sunrise", "Starry night photography"]
+    },
+    {
+        id: 4,
+        name: "Swat Valley Serenity",
+        price: 1100,
+        priceDisplay: "$1,100",
+        description: "Relax in the ‘Switzerland of the East’ with lush valleys, rivers, and waterfalls. Explore Mingora, Malam Jabba, and traditional Pashtun hospitality.",
+        image: "assets/images/pic4.jpg",
+        type: "relaxation",
+        duration: 5,
+        rating: 4.6,
+        continent: "Asia",
+        activities: ["Skiing (seasonal)", "River Walks", "Cultural Tours", "Bazaar Visits"],
+        accommodation: "Riverside resort",
+        transport: "Private car + local guide",
+        startDate: "2024-07-01",
+        highlights: ["Malam Jabba ski resort", "Fizagat Park", "Swat Museum", "White Palace Marghazar"]
+    },
+    {
+        id: 5,
+        name: "Lahore Heritage Tour",
+        price: 900,
+        priceDisplay: "$900",
+        description: "Step back in time through Lahore’s Mughal-era architecture, vibrant food streets, and rich cultural history.",
+        image: "assets/images/lahore.jpg",
+        type: "cultural",
+        duration: 4,
+        rating: 4.8,
+        continent: "Asia",
+        activities: ["Fort Visits", "Museum Tours", "Food Street Dining", "Market Shopping"],
+        accommodation: "Heritage-style boutique hotel",
+        transport: "Private car",
+        startDate: "2024-08-10",
+        highlights: ["Lahore Fort", "Badshahi Mosque", "Shalimar Gardens", "Anarkali Bazaar"]
+    },
+    {
+        id: 6,
+        name: "Karachi Coastal Experience",
+        price: 950,
+        priceDisplay: "$950",
+        description: "Enjoy Karachi’s bustling coastal charm, from sandy beaches to seafood feasts and heritage landmarks.",
+        image: "assets/images/pic7.jpg",
+        type: "urban",
+        duration: 3,
+        rating: 4.5,
+        continent: "Asia",
+        activities: ["Beach Visits", "Boat Rides", "Seafood Dining", "City Tours"],
+        accommodation: "Seaview hotel",
+        transport: "Private car",
+        startDate: "2024-09-05",
+        highlights: ["Clifton Beach", "Manora Island", "Quaid-e-Azam Mausoleum", "Burns Road food street"]
+    }
+];
+
+
+        // Global variables
+        let filteredTrips = [...trips];
+        // DOM Elements
+        const tripGallery = document.getElementById('trip-gallery');
+        const detailsModal = document.getElementById('details-modal');
+        const closeDetailsBtn = document.getElementById('close-details');
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTrips();
+            setupEventListeners();
+        });
+        
+        function setupEventListeners() {
+            // Modal event listeners
+            closeDetailsBtn.addEventListener('click', () => detailsModal.style.display = 'none');
+            window.addEventListener('click', (event) => {
+                if (event.target === detailsModal) detailsModal.style.display = 'none';
+            });
+            
+            // Filter and sort events
+            document.getElementById('search-filter').addEventListener('input', applyFilters);
+            document.getElementById('sort-select').addEventListener('change', applyFilters);
+            document.getElementById('type-filter').addEventListener('change', applyFilters);
+            document.getElementById('price-range').addEventListener('change', applyFilters);
+            document.getElementById('duration-filter').addEventListener('change', applyFilters);
+        }
+        
+        function renderTrips() {
+            tripGallery.innerHTML = '';
+            
+            if (filteredTrips.length === 0) {
+                tripGallery.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 4rem 2rem;">
+                        <i class="fas fa-search" style="font-size: 3rem; color: #ccc; margin-bottom: 1rem;"></i>
+                        <h3>No trips found</h3>
+                        <p>Try adjusting your filters or search terms.</p>
+                    </div>
+                `;
+                return;
+            }
+            filteredTrips.forEach(trip => {
+                const card = createTripCard(trip);
+                tripGallery.appendChild(card);
+            });
+        }
+        
+        function createTripCard(trip) {
+            const card = document.createElement('div');
+            card.className = 'trip-card lazy-load';
+            card.innerHTML = `
+                <img src="${trip.image}" alt="${trip.name}" loading="lazy">
+                <div class="trip-info">
+                    <h3>${trip.name}</h3>
+                    <div class="price">${trip.priceDisplay}</div>
+                    <div class="description">${trip.description.substring(0, 120)}...</div>
+                    <div class="trip-meta">
+                        <span><i class="fas fa-clock"></i> ${trip.duration} days</span>
+                        <div class="rating">
+                            <span class="stars">${generateStars(trip.rating)}</span>
+                            <span>${trip.rating}</span>
+                        </div>
+                    </div>
+                    <div class="trip-actions">
+                        <button class="btn btn-primary" onclick="showTripDetails(${trip.id})">
+                            <i class="fas fa-eye"></i> View Details
+                        </button>
+                        <button class="btn btn-secondary" onclick="bookTrip(${trip.id})">
+                            <i class="fas fa-plane"></i> Book Now
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            setTimeout(() => card.classList.add('loaded'), 100);
+            return card;
+        }
+        
+        function generateStars(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 !== 0;
+            let stars = '';
+            
+            for (let i = 0; i < fullStars; i++) {
+                stars += '<i class="fas fa-star"></i>';
+            }
+            
+            if (hasHalfStar) {
+                stars += '<i class="fas fa-star-half-alt"></i>';
+            }
+            
+            const emptyStars = 5 - Math.ceil(rating);
+            for (let i = 0; i < emptyStars; i++) {
+                stars += '<i class="far fa-star"></i>';
+            }
+            
+            return stars;
+        }
+        
+        function showTripDetails(tripId) {
+            const trip = trips.find(t => t.id === tripId);
+            if (!trip) return;
+            document.getElementById('modal-title').textContent = trip.name;
+            document.getElementById('modal-trip-content').innerHTML = `
+                <img src="${trip.image}" alt="${trip.name}" class="modal-trip-image">
+                <div class="trip-details-grid">
+                    <div class="detail-item">
+                        <i class="fas fa-dollar-sign"></i>
+                        <strong>Price</strong>
+                        ${trip.priceDisplay}
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-clock"></i>
+                        <strong>Duration</strong>
+                        ${trip.duration} days
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-star"></i>
+                        <strong>Rating</strong>
+                        ${trip.rating}/5.0
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <strong>Type</strong>
+                        ${trip.type.charAt(0).toUpperCase() + trip.type.slice(1)}
+                    </div>
+                </div>
+                <p><strong>Description:</strong> ${trip.description}</p>
+                <div style="margin: 1.5rem 0;">
+                    <h4><i class="fas fa-list"></i> Activities Included:</h4>
+                    <ul style="margin-left: 1rem;">
+                        ${trip.activities.map(activity => `<li>${activity}</li>`).join('')}
+                    </ul>
+                </div>
+                <div style="margin: 1.5rem 0;">
+                    <h4><i class="fas fa-bed"></i> Accommodation:</h4>
+                    <p>${trip.accommodation}</p>
+                </div>
+                <div style="margin: 1.5rem 0;">
+                    <h4><i class="fas fa-plane"></i> Transport:</h4>
+                    <p>${trip.transport}</p>
+                </div>
+                <div style="margin: 1.5rem 0;">
+                    <h4><i class="fas fa-calendar"></i> Trip Highlights:</h4>
+                    <ul style="margin-left: 1rem;">
+                        ${trip.highlights.map(highlight => `<li>${highlight}</li>`).join('')}
+                    </ul>
+                </div>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button class="btn btn-primary" onclick="bookTrip(${trip.id})" style="font-size: 1.1rem; padding: 15px 30px;">
+                        <i class="fas fa-plane"></i> Book This Trip Now
+                    </button>
+                </div>
+            `;
+            
+            detailsModal.style.display = 'block';
+        }
+        
+        function bookTrip(tripId) {
+            const trip = trips.find(t => t.id === tripId);
+            if (!trip) return;
+            // Simulate booking process
+            const bookingConfirmation = Math.random().toString(36).substr(2, 9).toUpperCase();
+            
+            alert(`🎉 Booking Initiated!\n\nTrip: ${trip.name}\nPrice: ${trip.priceDisplay}\nBooking Reference: ${bookingConfirmation}\n\nYou will be redirected to our secure payment portal. Thank you for choosing Travel Smart!`);
+            
+            // Close modal if open
+            detailsModal.style.display = 'none';
+        }
+        
+        function applyFilters() {
+            const searchTerm = document.getElementById('search-filter').value.toLowerCase();
+            const sortBy = document.getElementById('sort-select').value;
+            const typeFilter = document.getElementById('type-filter').value;
+            const priceRange = document.getElementById('price-range').value;
+            const durationFilter = document.getElementById('duration-filter').value;
+            // Filter trips
+            filteredTrips = trips.filter(trip => {
+                const matchesSearch = trip.name.toLowerCase().includes(searchTerm) || 
+                                    trip.description.toLowerCase().includes(searchTerm);
+                
+                const matchesType = !typeFilter || trip.type === typeFilter;
+                const matchesPrice = !priceRange || trip.price <= parseInt(priceRange);
+                const matchesDuration = !durationFilter || trip.duration <= parseInt(durationFilter);
+                return matchesSearch && matchesType && matchesPrice && matchesDuration;
+            });
+            // Sort trips
+            filteredTrips.sort((a, b) => {
+                switch (sortBy) {
+                    case 'price-low':
+                        return a.price - b.price;
+                    case 'price-high':
+                        return b.price - a.price;
+                    case 'rating':
+                        return b.rating - a.rating;
+                    case 'duration':
+                        return a.duration - b.duration;
+                    case 'name':
+                    default:
+                        return a.name.localeCompare(b.name);
+                }
+            });
+            renderTrips();
+        }
+    </script>
+</body>
+</html>

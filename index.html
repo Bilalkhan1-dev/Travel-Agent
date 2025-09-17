@@ -1,0 +1,1800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glow Travel</title>
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+    :root {
+        --primary-color: #87CEEB;
+        --secondary-color: #FF7F50;
+        --accent-color: #50C878;
+        --text-color: #333;
+        --light-gray: #f8f9fa;
+        --dark-overlay: rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: var(--light-gray);
+        scroll-behavior: smooth;
+    }
+
+    .section-title {
+        text-align: center;
+        font-family: 'Playfair Display', serif;
+        font-size: 3rem; /* Increased from 2.5rem */
+        margin-bottom: 2rem;
+        color: var(--text-color);
+        position: relative;
+    }
+
+    .section-title::after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        margin: 1rem auto;
+    }
+
+    /* Hero Section */
+    .hero-section {
+        position: relative;
+        height: 100vh;
+        overflow: hidden;
+        color: white;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .hero-img-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -2;
+    }
+
+    #hero-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, rgba(135, 206, 235, 0.3), rgba(255, 127, 80, 0.3));
+        z-index: -1;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .hero-text h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 4rem; /* Increased from 3.5rem */
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        animation: fadeInUp 1s ease-out;
+    }
+
+    .hero-text p {
+        font-size: 1.4rem; /* Increased from 1.2rem */
+        margin-bottom: 2rem;
+        opacity: 0.9;
+        animation: fadeInUp 1s ease-out 0.3s both;
+    }
+    
+    .search-container {
+        max-width: 600px;
+        margin: 2rem auto;
+        animation: fadeInUp 1s ease-out 0.6s both;
+    }
+
+    .search-bar {
+        display: flex;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50px;
+        padding: 5px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .search-bar input {
+        flex: 1;
+        border: none;
+        background: transparent;
+        padding: 15px 20px;
+        color: white;
+        font-size: 18px; /* Increased from 16px */
+        outline: none;
+    }
+
+    .search-bar input::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .search-bar button {
+        background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 45px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 18px; /* Increased from implied default */
+        transition: all 0.3s ease;
+    }
+
+    .search-bar button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    /* Navbar */
+    .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        z-index: 1000;
+        transition: all 0.3s ease;
+        background: transparent;
+    }
+
+    .navbar.scrolled {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+    }
+
+    .navbar.scrolled .logo,
+    .navbar.scrolled .nav-links a {
+        color: var(--text-color);
+    }
+
+    .logo {
+        font-size: 2rem; /* Increased from 1.8rem */
+        font-weight: 700;
+        color: white;
+        text-decoration: none;
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 2rem;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 1.1rem; /* Increased from implied default */
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .nav-links a::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+        width: 100%;
+    }
+
+    .mobile-menu {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+    }
+
+    .mobile-menu span {
+        width: 25px;
+        height: 3px;
+        background: white;
+        margin: 3px 0;
+        transition: 0.3s;
+    }
+
+    /* Trip Catalog */
+    .trip-catalog-section {
+        padding: 6rem 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .filter-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 3rem;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .filter-group label {
+        font-weight: 600;
+        color: var(--text-color);
+        font-size: 1rem; /* Increased from 0.9rem */
+    }
+
+    .filter-controls select,
+    .filter-controls input {
+        padding: 10px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 25px;
+        font-size: 16px; /* Increased from 14px */
+        outline: none;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+    .filter-controls select:focus,
+    .filter-controls input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.1);
+    }
+
+    .search-filters {
+        flex: 1;
+        min-width: 250px;
+        max-width: 400px;
+    }
+
+    .trip-gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .trip-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .trip-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    }
+
+    .trip-card img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .trip-card:hover img {
+        transform: scale(1.05);
+    }
+
+    .trip-info {
+        padding: 1.5rem;
+    }
+
+    .trip-info h3 {
+        font-size: 1.6rem; /* Increased from 1.4rem */
+        margin-bottom: 0.5rem;
+        color: var(--text-color);
+        font-weight: 600;
+    }
+
+    .trip-info .price {
+        font-size: 1.7rem; /* Increased from 1.5rem */
+        font-weight: 700;
+        color: var(--secondary-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .trip-info .description {
+        color: #666;
+        font-size: 1rem; /* Increased from 0.9rem */
+        line-height: 1.5;
+        margin-bottom: 1rem;
+    }
+
+    .trip-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.9rem; /* Increased from 0.8rem */
+        color: #888;
+        margin-bottom: 1rem;
+    }
+
+    .rating {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .stars {
+        color: #ffd700;
+    }
+
+    .trip-actions {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+        font-size: 1rem; /* Increased from 0.9rem */
+    }
+
+    .btn-primary {
+        background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+        color: white;
+    }
+
+    .btn-secondary {
+        background: transparent;
+        color: var(--primary-color);
+        border: 2px solid var(--primary-color);
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    /* About Section */
+    .about-section {
+        padding: 6rem 2rem;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        text-align: center;
+    }
+
+    .brand-story {
+        max-width: 800px;
+        margin: 0 auto 3rem;
+        font-size: 1.2rem; /* Increased from 1.1rem */
+        line-height: 1.8;
+        color: #555;
+    }
+
+    .stats-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .stat-item {
+        background: white;
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .stat-item:hover {
+        transform: translateY(-5px);
+    }
+
+    .counter {
+        font-size: 3.5rem; /* Increased from 3rem */
+        font-weight: 700;
+        color: var(--secondary-color);
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        font-weight: 600;
+        color: var(--text-color);
+        font-size: 1.2rem; /* Increased from 1.1rem */
+    }
+
+    .stat-icon {
+        font-size: 2rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    /* Contact Section */
+    .contact-section {
+        padding: 6rem 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .contact-info {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin: 2rem 0;
+    }
+
+    .contact-item {
+        background: white;
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .contact-item:hover {
+        transform: translateY(-5px);
+    }
+
+    .contact-item i {
+        font-size: 2rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .contact-item h3 {
+        margin-bottom: 1rem;
+        color: var(--text-color);
+        font-size: 1.4rem; /* Increased from implied default */
+    }
+
+    .contact-item a,
+    .contact-item p {
+        color: var(--secondary-color);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1rem; /* Increased from implied default */
+    }
+
+    .contact-item a:hover {
+        text-decoration: underline;
+    }
+
+    #map {
+        margin-top: 2rem;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+    }
+
+    #map iframe {
+        width: 100%;
+        height: 400px;
+        border: none;
+    }
+
+    /* Modals */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 2000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.8);
+        backdrop-filter: blur(5px);
+        animation: fadeIn 0.3s ease;
+    }
+
+    .modal-content,
+    .modal-content-details {
+        background: white;
+        margin: 2% auto;
+        padding: 0;
+        border-radius: 20px;
+        width: 90%;
+        max-width: 800px;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+        animation: slideIn 0.3s ease;
+    }
+
+    .modal-header {
+        position: sticky;
+        top: 0;
+        background: white;
+        padding: 1.5rem;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .modal-header h2 {
+        font-size: 2rem; /* Increased from implied default */
+    }
+
+    .modal-body {
+        padding: 2rem;
+    }
+
+    .close-btn,
+    .close-details-btn {
+        background: none;
+        border: none;
+        font-size: 2rem;
+        cursor: pointer;
+        color: #999;
+        transition: color 0.3s ease;
+    }
+
+    .close-btn:hover,
+    .close-details-btn:hover {
+        color: var(--secondary-color);
+    }
+
+    .modal-trip-image {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 15px;
+        margin-bottom: 1.5rem;
+    }
+
+    .trip-details-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+    }
+
+    .detail-item {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 10px;
+        text-align: center;
+    }
+
+    .detail-item i {
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .detail-item strong {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--text-color);
+        font-size: 1rem; /* Increased from implied default */
+    }
+
+    /* Feedback Form */
+    .feedback-form {
+        max-width: 500px;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--text-color);
+        font-size: 1rem; /* Increased from implied default */
+    }
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 16px; /* Increased from 14px */
+        outline: none;
+        transition: all 0.3s ease;
+        font-family: inherit;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.1);
+    }
+
+    .rating-input {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: center;
+        margin: 1rem 0;
+    }
+
+    .rating-input input[type="radio"] {
+        display: none;
+    }
+
+    .rating-input label {
+        font-size: 2rem;
+        color: #ddd;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .rating-input input[type="radio"]:checked ~ label,
+    .rating-input label:hover,
+    .rating-input label:hover ~ label {
+        color: #ffd700;
+    }
+
+    /* FABs */
+    .fab {
+        position: fixed;
+        background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        font-size: 24px; /* Increased from 20px */
+        cursor: pointer;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        transition: all 0.3s ease;
+        z-index: 1500;
+    }
+
+    .fab:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 25px rgba(0,0,0,0.4);
+    }
+
+    #feedback-fab {
+        bottom: 20px;
+        right: 90px;
+    }
+
+    #scroll-to-top {
+        bottom: 20px;
+        right: 20px;
+        display: none;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+        }
+        40% {
+            transform: translateY(-10px);
+        }
+        60% {
+            transform: translateY(-5px);
+        }
+    }
+
+    .bounce {
+        animation: bounce 2s infinite;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .hero-text h1 {
+            font-size: 3rem; /* Increased from 2.5rem */
+        }
+
+        .nav-links {
+            display: none;
+        }
+
+        .mobile-menu {
+            display: flex;
+        }
+
+        .navbar.scrolled .mobile-menu span {
+            background: var(--text-color);
+        }
+
+        .filter-controls {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .trip-gallery {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .stats-container {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .contact-info {
+            grid-template-columns: 1fr;
+        }
+
+        .modal-content,
+        .modal-content-details {
+            width: 95%;
+            margin: 5% auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem; /* Increased from 2rem */
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hero-text h1 {
+            font-size: 2.5rem; /* Increased from 2rem */
+        }
+
+        .search-bar {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .search-bar button {
+            border-radius: 25px;
+        }
+
+        .trip-gallery {
+            grid-template-columns: 1fr;
+        }
+
+        .fab {
+            width: 50px;
+            height: 50px;
+            font-size: 18px; /* Adjusted for smaller screens */
+        }
+
+        #feedback-fab {
+            right: 80px;
+        }
+    }
+
+    /* Loading and Lazy Loading */
+    .lazy-load {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .lazy-load.loaded {
+        opacity: 1;
+    }
+
+    .loading-spinner {
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid var(--primary-color);
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Success Messages */
+    .success-message {
+        background: linear-gradient(45deg, var(--accent-color), #32CD32);
+        color: white;
+        padding: 1rem;
+        border-radius: 10px;
+        margin: 1rem 0;
+        text-align: center;
+        display: none;
+        animation: fadeInUp 0.5s ease;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+    }
+
+    /* Footer */
+    footer h2 {
+        font-size: 32px; /* Increased from 28px */
+    }
+
+    footer p {
+        font-size: 16px; /* Increased from 15px for description */
+    }
+
+    footer div a {
+        font-size: 16px; /* Increased from 14px for contact info */
+    }
+
+    footer div p {
+        font-size: 14px; /* Increased from 13px for copyright */
+    }
+</style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <a href="#home" class="logo">
+            <i class="fas fa-plane"></i> GlowTravel
+        </a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="trips.html"><i class="fas fa-map-marked-alt"></i> Trips</a></li>
+            <li><a href="About us.html"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="contactus.html"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
+        <div class="mobile-menu" id="mobile-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="home" class="hero-section">
+        <div class="hero-img-container">
+            <img src="assets/images/hero-img.jpg" id="hero-img" alt="Hero Image" loading="lazy">
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 id="hero-quote">"The world is a book, and those who do not travel read only one page."</h1>
+                <p id="hero-author">- Saint Augustine</p>
+                <div class="search-container">
+                    <div class="search-bar">
+                        <input type="text" id="destination-search" placeholder="Search destinations, tours, activities...">
+                        <button onclick="performSearch()">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Trip Catalog Section -->
+    <section id="trip-catalog" class="trip-catalog-section">
+        <h2 class="section-title">
+            <i class="fas fa-globe-americas"></i> Explore Our Amazing Destinations
+        </h2>
+        
+        <div class="filter-controls">
+            <div class="filter-group">
+                <label for="search-filter">Search</label>
+                <input type="text" id="search-filter" class="search-filters" placeholder="Search trips...">
+            </div>
+            
+            <div class="filter-group">
+                <label for="sort-select">Sort By</label>
+                <select id="sort-select">
+                    <option value="name">Name</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="rating">Rating</option>
+                    <option value="duration">Duration</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="type-filter">Trip Type</label>
+                <select id="type-filter">
+                    <option value="">All Types</option>
+                    <option value="adventure">Adventure</option>
+                    <option value="cultural">Cultural</option>
+                    <option value="relaxation">Relaxation</option>
+                    <option value="urban">Urban</option>
+                    <option value="nature">Nature</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="price-range">Max Price</label>
+                <select id="price-range">
+                    <option value="">Any Price</option>
+                    <option value="1000">Under $1,000</option>
+                    <option value="2000">Under $2,000</option>
+                    <option value="3000">Under $3,000</option>
+                    <option value="5000">Under $5,000</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="duration-filter">Duration</label>
+                <select id="duration-filter">
+                    <option value="">Any Duration</option>
+                    <option value="3">3 days</option>
+                    <option value="5">5 days</option>
+                    <option value="7">7 days</option>
+                    <option value="10">10+ days</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="trip-gallery" class="trip-gallery">
+            <!-- Trip cards will be dynamically inserted here -->
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+      <h2 class="section-title">
+    <i class="fas fa-heart"></i> About GlowTravel
+</h2>
+<p class="brand-story">
+    At GlowTravel, we believe travel is more than visiting new places; it’s about creating experiences that light up your soul. Our mission is to make trip planning effortless and exciting, offering curated journeys for every traveler’s dream. With expertise and a passion for adventure, we craft memories that inspire, connect cultures, and leave you glowing long after the journey ends.
+</p>
+
+        
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <span class="counter" data-target="150">0</span>
+                <div class="stat-label">Destinations Covered</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <span class="counter" data-target="25000">0</span>
+                <div class="stat-label">Happy Travelers</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-route"></i>
+                </div>
+                <span class="counter" data-target="300">0</span>
+                <div class="stat-label">Tours Available</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+  <section id="contact" class="contact-section">
+    <h2 class="section-title">
+        <i class="fas fa-phone-alt"></i> Get In Touch
+    </h2>
+    
+    <div class="contact-info">
+        <div class="contact-item">
+            <i class="fas fa-envelope"></i>
+            <h3>Email Us</h3>
+            <a href="mailto:contact@glowtravel.com">contact@glowtravel.com</a>
+            <p>We'll respond within 24 hours</p>
+        </div>
+        <div class="contact-item">
+            <i class="fas fa-phone"></i>
+            <h3>Call Us</h3>
+            <a href="tel:+923001234567">+92 300 1234567</a>
+            <p>Mon-Fri: 9AM-6PM PKT</p>
+        </div>
+        <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <h3>Visit Us</h3>
+            <p>123 Travel Road<br>Karachi, Pakistan</p>
+        </div>
+    </div>
+</section>
+
+      <div id="map">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13280165.732037485!2d60.89473779643176!3d30.37532151358398!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38db52d054af3e15%3A0xcee93df3afeea6d7!2sPakistan!5e0!3m2!1sen!2s!4v1691856842526!5m2!1sen!2s" 
+        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy">
+    </iframe>
+</div>
+
+    </section>
+
+    <!-- Details Modal -->
+    <div id="details-modal" class="modal">
+        <div class="modal-content-details">
+            <div class="modal-header">
+                <h2 id="modal-title">Trip Details</h2>
+                <button class="close-details-btn" id="close-details">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-trip-content">
+                <!-- Trip details will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div id="feedback-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-star"></i> Share Your Experience</h2>
+                <button class="close-btn" id="close-feedback">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="feedback-form" class="feedback-form">
+                    <div class="form-group">
+                        <label for="feedback-name">Your Name</label>
+                        <input type="text" id="feedback-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="feedback-email">Your Email</label>
+                        <input type="email" id="feedback-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="feedback-destination">Destination Visited</label>
+                        <select id="feedback-destination" required>
+                            <option value="">Select a destination</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Rate Your Experience</label>
+                        <div class="rating-input">
+                            <input type="radio" id="star5" name="rating" value="5">
+                            <label for="star5"><i class="fas fa-star"></i></label>
+                            <input type="radio" id="star4" name="rating" value="4">
+                            <label for="star4"><i class="fas fa-star"></i></label>
+                            <input type="radio" id="star3" name="rating" value="3">
+                            <label for="star3"><i class="fas fa-star"></i></label>
+                            <input type="radio" id="star2" name="rating" value="2">
+                            <label for="star2"><i class="fas fa-star"></i></label>
+                            <input type="radio" id="star1" name="rating" value="1">
+                            <label for="star1"><i class="fas fa-star"></i></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="feedback-message">Your Review</label>
+                        <textarea id="feedback-message" rows="5" placeholder="Tell us about your experience..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-paper-plane"></i> Submit Review
+                    </button>
+                </form>
+                <div id="feedback-success" class="success-message">
+                    <i class="fas fa-check-circle"></i> Thank you for your feedback! Your review helps us improve our services.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Buttons -->
+    <button id="feedback-fab" class="fab" title="Leave Feedback">
+        <i class="fas fa-comment"></i>
+    </button>
+    
+    <button id="scroll-to-top" class="fab" title="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+<!-- Footer -->
+<footer style="background-color: #f8f9fa; padding: 40px 20px; font-family: Arial, sans-serif; border-top: 1px solid #ddd;">
+    <div style="max-width: 1200px; margin: auto; text-align: center;">
+        
+        <!-- Logo / Name -->
+        <h2 style="font-size: 28px; margin-bottom: 8px; font-weight: bold;">
+            <span style="background: linear-gradient(90deg, #4facfe, #ff9966); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                Glow Travel
+            </span>
+        </h2>
+        <p style="font-size: 15px; color: #555; margin-bottom: 25px;">
+            Your trusted partner for unforgettable journeys across the globe.
+        </p>
+
+        <!-- Contact Info -->
+        <div style="margin-bottom: 18px; font-size: 14px;">
+            <a href="mailto:bilalhanif218@gmail.com" style="color: #333; margin: 0 12px; text-decoration: none; transition: color 0.3s;">
+                <i class="fas fa-envelope"></i> bilalhanif218@gmail.com
+            </a>
+            <span style="color: #ccc;">|</span>
+            <a href="tel:+923193254529" style="color: #333; margin: 0 12px; text-decoration: none; transition: color 0.3s;">
+                <i class="fas fa-phone"></i> 0319 3254529
+            </a>
+        </div>
+
+        <!-- Social Icons -->
+        <div class="Social-Icons" style="margin-bottom: 25px;">
+            <a href="https://www.facebook.com/share/1Aew91ye28/?mibextid=qi2Omg" style="color: #4facfe; margin: 0 10px; font-size: 18px; transition: color 0.3s;">
+                <i class="fa-brands fa-facebook"></i>
+            </a>
+            <a href="https://www.instagram.com/its.khan_.12?igsh=czFhOGoyd2Ewd3Ry" style="color: #ff9966; margin: 0 10px; font-size: 18px; transition: color 0.3s;">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="https://wa.me/923193254529" style="color: #4facfe; margin: 0 10px; font-size: 18px; transition: color 0.3s;">
+                <i class="fa-brands fa-whatsapp"></i>
+            </a>
+        </div>
+
+        <!-- Copyright -->
+        <p style="font-size: 13px; color: #888; margin-top: 15px;">
+            &copy; 2025 Glow Travel. All Rights Reserved.
+        </p>
+    </div>
+</footer>
+
+    <script>
+      window.addEventListener("scroll", function () {
+        const navbar = document.querySelector(".navbar");
+        if (window.scrollY > 50) {
+            navbar.classList.add("scrolled");
+        } else {
+            navbar.classList.remove("scrolled");
+        }
+    });
+
+       // Trip data (Pakistan Edition)
+const trips = [
+    {
+        id: 1,
+        name: "Hunza Valley Escape",
+        price: 1200,
+        priceDisplay: "$1,200",
+        description: "Discover the breathtaking beauty of Hunza Valley with its snow-capped peaks, turquoise rivers, and warm hospitality. Explore ancient forts and serene mountain villages.",
+        image: "assets/images/pic1.jpg",
+        type: "nature",
+        duration: 7,
+        rating: 4.9,
+        continent: "Asia",
+        activities: ["Fort Visits", "Mountain Hiking", "Cultural Evenings", "Photography Tours"],
+        accommodation: "Boutique hotel with mountain views",
+        transport: "Private vehicle + domestic flight",
+        startDate: "2024-04-10",
+        highlights: ["Baltit Fort", "Attabad Lake boating", "Eagle’s Nest sunset", "Karimabad bazaar"]
+    },
+    {
+        id: 2,
+        name: "Skardu Adventure",
+        price: 1400,
+        priceDisplay: "$1,400",
+        description: "Venture into Skardu, the gateway to some of the world’s highest peaks. Witness crystal-clear lakes, ancient rock carvings, and unforgettable landscapes.",
+        image: "assets/images/pic6.jpg",
+        type: "adventure",
+        duration: 8,
+        rating: 4.8,
+        continent: "Asia",
+        activities: ["Trekking", "Lake Visits", "Fort Tours", "Local Handicraft Shopping"],
+        accommodation: "Mountain lodge near Upper Kachura Lake",
+        transport: "Domestic flight + jeep transfers",
+        startDate: "2024-05-15",
+        highlights: ["Shangrila Resort", "Shigar Fort", "Upper & Lower Kachura Lakes", "Sheosar Lake in Deosai"]
+    },
+    {
+        id: 3,
+        name: "Fairy Meadows Trek",
+        price: 1300,
+        priceDisplay: "$1,300",
+        description: "Trek to one of the most beautiful places on Earth, with panoramic views of Nanga Parbat. Enjoy camping under starry skies and lush green meadows.",
+        image: "assets/images/pic3.jpg",
+        type: "adventure",
+        duration: 6,
+        rating: 4.7,
+        continent: "Asia",
+        activities: ["Trekking", "Camping", "Photography", "Nature Walks"],
+        accommodation: "Tents and wooden huts in Fairy Meadows",
+        transport: "Jeep ride + guided trek",
+        startDate: "2024-06-05",
+        highlights: ["View of Nanga Parbat", "Raikot Glacier hike", "Fairy Meadows sunrise", "Starry night photography"]
+    },
+    {
+        id: 4,
+        name: "Swat Valley Serenity",
+        price: 1100,
+        priceDisplay: "$1,100",
+        description: "Relax in the ‘Switzerland of the East’ with lush valleys, rivers, and waterfalls. Explore Mingora, Malam Jabba, and traditional Pashtun hospitality.",
+        image: "assets/images/pic4.jpg",
+        type: "relaxation",
+        duration: 5,
+        rating: 4.6,
+        continent: "Asia",
+        activities: ["Skiing (seasonal)", "River Walks", "Cultural Tours", "Bazaar Visits"],
+        accommodation: "Riverside resort",
+        transport: "Private car + local guide",
+        startDate: "2024-07-01",
+        highlights: ["Malam Jabba ski resort", "Fizagat Park", "Swat Museum", "White Palace Marghazar"]
+    },
+    {
+        id: 5,
+        name: "Lahore Heritage Tour",
+        price: 900,
+        priceDisplay: "$900",
+        description: "Step back in time through Lahore’s Mughal-era architecture, vibrant food streets, and rich cultural history.",
+        image: "assets/images/lahore.jpg",
+        type: "cultural",
+        duration: 4,
+        rating: 4.8,
+        continent: "Asia",
+        activities: ["Fort Visits", "Museum Tours", "Food Street Dining", "Market Shopping"],
+        accommodation: "Heritage-style boutique hotel",
+        transport: "Private car",
+        startDate: "2024-08-10",
+        highlights: ["Lahore Fort", "Badshahi Mosque", "Shalimar Gardens", "Anarkali Bazaar"]
+    },
+    {
+        id: 6,
+        name: "Karachi Coastal Experience",
+        price: 950,
+        priceDisplay: "$950",
+        description: "Enjoy Karachi’s bustling coastal charm, from sandy beaches to seafood feasts and heritage landmarks.",
+        image: "assets/images/pic7.jpg",
+        type: "urban",
+        duration: 3,
+        rating: 4.5,
+        continent: "Asia",
+        activities: ["Beach Visits", "Boat Rides", "Seafood Dining", "City Tours"],
+        accommodation: "Seaview hotel",
+        transport: "Private car",
+        startDate: "2024-09-05",
+        highlights: ["Clifton Beach", "Manora Island", "Quaid-e-Azam Mausoleum", "Burns Road food street"]
+    }
+];
+
+        // Travel quotes array
+        const travelQuotes = [
+            {
+                quote: "The world is a book, and those who do not travel read only one page.",
+                author: "Saint Augustine"
+            },
+            {
+                quote: "Travel is the only thing you buy that makes you richer.",
+                author: "Anonymous"
+            },
+            {
+                quote: "Not all those who wander are lost.",
+                author: "J.R.R. Tolkien"
+            },
+            {
+                quote: "Adventure is worthwhile in itself.",
+                author: "Amelia Earhart"
+            },
+            {
+                quote: "To travel is to live.",
+                author: "Hans Christian Andersen"
+            }
+        ];
+
+        // Global variables
+        let filteredTrips = [...trips];
+        let currentQuoteIndex = 0;
+
+        // DOM Elements
+        const tripGallery = document.getElementById('trip-gallery');
+        const detailsModal = document.getElementById('details-modal');
+        const feedbackModal = document.getElementById('feedback-modal');
+        const closeDetailsBtn = document.getElementById('close-details');
+        const closeFeedbackBtn = document.getElementById('close-feedback');
+        const feedbackFab = document.getElementById('feedback-fab');
+        const scrollToTopBtn = document.getElementById('scroll-to-top');
+        const navbar = document.getElementById('navbar');
+        const heroQuote = document.getElementById('hero-quote');
+        const heroAuthor = document.getElementById('hero-author');
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            renderTrips();
+            setupEventListeners();
+            animateCounters();
+            rotateQuotes();
+            setupLazyLoading();
+            populateFeedbackDestinations();
+        }
+
+        function setupEventListeners() {
+            // Modal event listeners
+            closeDetailsBtn.addEventListener('click', () => detailsModal.style.display = 'none');
+            closeFeedbackBtn.addEventListener('click', () => feedbackModal.style.display = 'none');
+            feedbackFab.addEventListener('click', () => feedbackModal.style.display = 'block');
+
+            // Close modals when clicking outside
+            window.addEventListener('click', (event) => {
+                if (event.target === detailsModal) detailsModal.style.display = 'none';
+                if (event.target === feedbackModal) feedbackModal.style.display = 'none';
+            });
+
+            // Scroll events
+            window.addEventListener('scroll', handleScroll);
+            scrollToTopBtn.addEventListener('click', scrollToTop);
+
+            // Filter and sort events
+            document.getElementById('search-filter').addEventListener('input', applyFilters);
+            document.getElementById('sort-select').addEventListener('change', applyFilters);
+            document.getElementById('type-filter').addEventListener('change', applyFilters);
+            document.getElementById('price-range').addEventListener('change', applyFilters);
+            document.getElementById('duration-filter').addEventListener('change', applyFilters);
+
+            // Search functionality
+            document.getElementById('destination-search').addEventListener('input', handleHeroSearch);
+
+            // Feedback form
+            document.getElementById('feedback-form').addEventListener('submit', handleFeedbackSubmit);
+
+            // Mobile menu
+            document.getElementById('mobile-menu').addEventListener('click', toggleMobileMenu);
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+
+        function renderTrips() {
+            tripGallery.innerHTML = '';
+            
+            if (filteredTrips.length === 0) {
+                tripGallery.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 4rem 2rem;">
+                        <i class="fas fa-search" style="font-size: 3rem; color: #ccc; margin-bottom: 1rem;"></i>
+                        <h3>No trips found</h3>
+                        <p>Try adjusting your filters or search terms.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filteredTrips.forEach(trip => {
+                const card = createTripCard(trip);
+                tripGallery.appendChild(card);
+            });
+        }
+
+        function createTripCard(trip) {
+            const card = document.createElement('div');
+            card.className = 'trip-card lazy-load';
+            card.innerHTML = `
+                <img src="${trip.image}" alt="${trip.name}" loading="lazy">
+                <div class="trip-info">
+                    <h3>${trip.name}</h3>
+                    <div class="price">${trip.priceDisplay}</div>
+                    <div class="description">${trip.description.substring(0, 120)}...</div>
+                    <div class="trip-meta">
+                        <span><i class="fas fa-clock"></i> ${trip.duration} days</span>
+                        <div class="rating">
+                            <span class="stars">${generateStars(trip.rating)}</span>
+                            <span>${trip.rating}</span>
+                        </div>
+                    </div>
+                    <div class="trip-actions">
+                        <button class="btn btn-primary" onclick="showTripDetails(${trip.id})">
+                            <i class="fas fa-eye"></i> View Details
+                        </button>
+                        <button class="btn btn-secondary" onclick="bookTrip(${trip.id})">
+                            <i class="fas fa-plane"></i> Book Now
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            setTimeout(() => card.classList.add('loaded'), 100);
+            return card;
+        }
+
+        function generateStars(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 !== 0;
+            let stars = '';
+            
+            for (let i = 0; i < fullStars; i++) {
+                stars += '<i class="fas fa-star"></i>';
+            }
+            
+            if (hasHalfStar) {
+                stars += '<i class="fas fa-star-half-alt"></i>';
+            }
+            
+            const emptyStars = 5 - Math.ceil(rating);
+            for (let i = 0; i < emptyStars; i++) {
+                stars += '<i class="far fa-star"></i>';
+            }
+            
+            return stars;
+        }
+
+        function showTripDetails(tripId) {
+            const trip = trips.find(t => t.id === tripId);
+            if (!trip) return;
+
+            document.getElementById('modal-title').textContent = trip.name;
+            document.getElementById('modal-trip-content').innerHTML = `
+                <img src="${trip.image}" alt="${trip.name}" class="modal-trip-image">
+                <div class="trip-details-grid">
+                    <div class="detail-item">
+                        <i class="fas fa-dollar-sign"></i>
+                        <strong>Price</strong>
+                        ${trip.priceDisplay}
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-clock"></i>
+                        <strong>Duration</strong>
+                        ${trip.duration} days
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-star"></i>
+                        <strong>Rating</strong>
+                        ${trip.rating}/5.0
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <strong>Type</strong>
+                        ${trip.type.charAt(0).toUpperCase() + trip.type.slice(1)}
+                    </div>
+                </div>
+                <p><strong>Description:</strong> ${trip.description}</p>
+                <div style="margin: 1.5rem 0;">
+                    <h4><i class="fas fa-list"></i> Activities Included:</h4>
+                    <ul style="margin-left: 1rem;">
+                        ${trip.activities.map(activity => `<li>${activity}</li>`).join('')}
+                    </ul>
+                </div>
+                <div style="margin: 1.5rem 0;">
+                    <h4><i class="fas fa-bed"></i> Accommodation:</h4>
+                    <p>${trip.accommodation}</p>
+                </div>
+                <div style="margin: 1.5rem 0;">
+                    <h4><i class="fas fa-plane"></i> Transport:</h4>
+                    <p>${trip.transport}</p>
+                </div>
+                <div style="margin: 1.5rem 0;">
+                    <h4><i class="fas fa-calendar"></i> Trip Highlights:</h4>
+                    <ul style="margin-left: 1rem;">
+                        ${trip.highlights.map(highlight => `<li>${highlight}</li>`).join('')}
+                    </ul>
+                </div>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button class="btn btn-primary" onclick="bookTrip(${trip.id})" style="font-size: 1.1rem; padding: 15px 30px;">
+                        <i class="fas fa-plane"></i> Book This Trip Now
+                    </button>
+                </div>
+            `;
+            
+            detailsModal.style.display = 'block';
+        }
+
+        function bookTrip(tripId) {
+            const trip = trips.find(t => t.id === tripId);
+            if (!trip) return;
+
+            // Simulate booking process
+            const bookingConfirmation = Math.random().toString(36).substr(2, 9).toUpperCase();
+            
+            alert(`🎉 Booking Initiated!\n\nTrip: ${trip.name}\nPrice: ${trip.priceDisplay}\nBooking Reference: ${bookingConfirmation}\n\nYou will be redirected to our secure payment portal. Thank you for choosing Travel Smart!`);
+            
+            // Close modal if open
+            detailsModal.style.display = 'none';
+        }
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('search-filter').value.toLowerCase();
+            const sortBy = document.getElementById('sort-select').value;
+            const typeFilter = document.getElementById('type-filter').value;
+            const priceRange = document.getElementById('price-range').value;
+            const durationFilter = document.getElementById('duration-filter').value;
+
+            // Filter trips
+            filteredTrips = trips.filter(trip => {
+                const matchesSearch = trip.name.toLowerCase().includes(searchTerm) || 
+                                    trip.description.toLowerCase().includes(searchTerm) ||
+                                    trip.activities.some(activity => activity.toLowerCase().includes(searchTerm));
+                
+                const matchesType = !typeFilter || trip.type === typeFilter;
+                const matchesPrice = !priceRange || trip.price <= parseInt(priceRange);
+                const matchesDuration = !durationFilter || trip.duration <= parseInt(durationFilter);
+
+                return matchesSearch && matchesType && matchesPrice && matchesDuration;
+            });
+
+            // Sort trips
+            filteredTrips.sort((a, b) => {
+                switch (sortBy) {
+                    case 'price-low':
+                        return a.price - b.price;
+                    case 'price-high':
+                        return b.price - a.price;
+                    case 'rating':
+                        return b.rating - a.rating;
+                    case 'duration':
+                        return a.duration - b.duration;
+                    case 'name':
+                    default:
+                        return a.name.localeCompare(b.name);
+                }
+            });
+
+            renderTrips();
+        }
+
+        function handleHeroSearch() {
+            const searchTerm = document.getElementById('destination-search').value.toLowerCase();
+            document.getElementById('search-filter').value = searchTerm;
+            applyFilters();
+            
+            if (searchTerm) {
+                document.getElementById('trip-catalog').scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        function performSearch() {
+            handleHeroSearch();
+        }
+
+        function handleScroll() {
+            const scrolled = window.pageYOffset > 100;
+            
+            // Show/hide scroll to top button
+            scrollToTopBtn.style.display = scrolled ? 'block' : 'none';
+            
+            // Add/remove navbar scroll class
+            navbar.classList.toggle('scrolled', scrolled);
+        }
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter');
+            const observerOptions = {
+                threshold: 0.5,
+                rootMargin: '0px 0px -100px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const counter = entry.target;
+                        const target = parseInt(counter.getAttribute('data-target'));
+                        let current = 0;
+                        const increment = target / 200;
+                        
+                        const updateCounter = () => {
+                            current += increment;
+                            if (current < target) {
+                                counter.textContent = Math.ceil(current).toLocaleString();
+                                requestAnimationFrame(updateCounter);
+                            } else {
+                                counter.textContent = target.toLocaleString();
+                            }
+                        };
+                        
+                        updateCounter();
+                        observer.unobserve(counter);
+                    }
+                });
+            }, observerOptions);
+
+            counters.forEach(counter => observer.observe(counter));
+        }
+
+        function rotateQuotes() {
+            setInterval(() => {
+                currentQuoteIndex = (currentQuoteIndex + 1) % travelQuotes.length;
+                const currentQuote = travelQuotes[currentQuoteIndex];
+                
+                heroQuote.style.opacity = '0';
+                heroAuthor.style.opacity = '0';
+                
+                setTimeout(() => {
+                    heroQuote.textContent = `"${currentQuote.quote}"`;
+                    heroAuthor.textContent = `- ${currentQuote.author}`;
+                    heroQuote.style.opacity = '1';
+                    heroAuthor.style.opacity = '1';
+                }, 500);
+            }, 8000);
+        }
+
+        function setupLazyLoading() {
+            const imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.src || img.dataset.src;
+                        img.classList.remove('lazy-load');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+
+            // Observe all images with lazy loading
+            document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+
+        function populateFeedbackDestinations() {
+            const select = document.getElementById('feedback-destination');
+            trips.forEach(trip => {
+                const option = document.createElement('option');
+                option.value = trip.name;
+                option.textContent = trip.name;
+                select.appendChild(option);
+            });
+        }
+
+        function handleFeedbackSubmit(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const feedbackData = {
+                name: formData.get('name') || document.getElementById('feedback-name').value,
+                email: formData.get('email') || document.getElementById('feedback-email').value,
+                destination: document.getElementById('feedback-destination').value,
+                rating: document.querySelector('input[name="rating"]:checked')?.value,
+                message: document.getElementById('feedback-message').value
+            };
+
+            // Simulate form submission
+            setTimeout(() => {
+                document.getElementById('feedback-form').style.display = 'none';
+                document.getElementById('feedback-success').style.display = 'block';
+                
+                setTimeout(() => {
+                    feedbackModal.style.display = 'none';
+                    document.getElementById('feedback-form').style.display = 'block';
+                    document.getElementById('feedback-success').style.display = 'none';
+                    document.getElementById('feedback-form').reset();
+                }, 3000);
+            }, 1000);
+        }
+
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        // Initialize geolocation for contact map
+        if (navigator.geolocation && document.getElementById('map')) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+                    const mapFrame = document.querySelector('#map iframe');
+                    if (mapFrame) {
+                        mapFrame.src = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387191.3083323278!2d${longitude}!3d${latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zVHJhdmVsIFNtYXJ0!5e0!3m2!1sen!2sus!4v1629814405424!5m2!1sen!2sus`;
+                    }
+                },
+                (error) => {
+                    console.log('Geolocation not available, using default map');
+                }
+            );
+        }
+
+        // Add some fun animations
+        function addScrollAnimations() {
+            const animateOnScroll = (entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            };
+
+            const scrollObserver = new IntersectionObserver(animateOnScroll, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            // Add scroll animations to sections
+            document.querySelectorAll('section').forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(30px)';
+                section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                scrollObserver.observe(section);
+            });
+        }
+
+        // Initialize scroll animations after page load
+        window.addEventListener('load', addScrollAnimations);
+
+        // Add floating animation to FABs
+        document.addEventListener('DOMContentLoaded', () => {
+            const fabs = document.querySelectorAll('.fab');
+            fabs.forEach((fab, index) => {
+                setInterval(() => {
+                    fab.classList.add('bounce');
+                    setTimeout(() => fab.classList.remove('bounce'), 2000);
+                }, 5000 + (index * 1000));
+            });
+        });
+    </script>
+</body>
+</html>
